@@ -1,21 +1,22 @@
-import './tabs.scss'
 import { connect } from 'react-redux'
 
 import { setActiveTab } from '../redux/actionCreators'
 
+import classes from './tabs.module.scss'
+
 const Tabs = ({ activeTab }) => {
-  const classesCheaper = activeTab === 'Самый дешевый' ? 'tab tab-cheaper active' : 'tab tab-cheaper'
-  const classesFaster = activeTab === 'Самый быстрый' ? 'tab tab-faster active' : 'tab tab-faster'
+  const classesCheaper = activeTab === 'Самый дешевый' ? 'tab-cheaper-active' : 'tab-cheaper'
+  const classesFaster = activeTab === 'Самый быстрый' ? 'tab-faster-active' : 'tab-faster'
 
   return (
-    <div className="tabs-container">
-      <div className={classesCheaper} onClick={(e) => setActiveTab(e.target.textContent)}>
+    <div className={classes['tabs-container']}>
+      <div className={`${classes.tab} ${classes[classesCheaper]}`} onClick={(e) => setActiveTab(e.target.textContent)}>
         Самый дешевый
       </div>
-      <div className={classesFaster} onClick={(e) => setActiveTab(e.target.textContent)}>
+      <div className={`${classes.tab} ${classes[classesFaster]}`} onClick={(e) => setActiveTab(e.target.textContent)}>
         Самый быстрый
       </div>
-      <div className="tab tab-optimal" onClick={() => {}}>
+      <div className={`${classes.tab} ${classes['tab-optimal']}`} onClick={() => {}}>
         Оптимальный
       </div>
     </div>

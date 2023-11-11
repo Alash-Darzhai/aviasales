@@ -3,8 +3,9 @@ import { connect } from 'react-redux'
 import { Spin, Alert } from 'antd'
 
 import Ticket from '../ticket'
-import './ticketsList.scss'
 import { store } from '..'
+
+import classes from './ticketsList.module.scss'
 
 const TicketsList = ({ tickets, maxCount, sort, isError }) => {
   const sortCheaper = (list) => {
@@ -39,21 +40,26 @@ const TicketsList = ({ tickets, maxCount, sort, isError }) => {
     }
   } else {
     elements = (
-      <Alert message="Рейсов, подходящих под заданные фильтры, не найдено" type="info" showIcon className="message" />
+      <Alert
+        message="Рейсов, подходящих под заданные фильтры, не найдено"
+        type="info"
+        showIcon
+        className={classes.message}
+      />
     )
   }
 
   const loadedPage = elements ? (
     <React.Fragment>
       {elements}
-      <button className="btn-more" onClick={() => store.dispatch({ type: 'ADD_TICKETS', maxCount })}>
+      <button className={classes['btn-more']} onClick={() => store.dispatch({ type: 'ADD_TICKETS', maxCount })}>
         Показать еще 5 билетов
       </button>
     </React.Fragment>
   ) : (
-    <Spin className="loader" />
+    <Spin className={classes.loader} />
   )
-  return <div className="tickets-list">{loadedPage}</div>
+  return <div className={classes['tickets-list']}>{loadedPage}</div>
 }
 
 const mapStateToProps = (state) => {

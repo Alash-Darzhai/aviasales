@@ -8,6 +8,21 @@ import {
   setTicketsTransferThree,
 } from './actionCreators'
 
+const fetchTickets = async (url) => {
+  try {
+    const response = await fetch(url)
+    const data = await response.json()
+
+    if (response.ok) {
+      return { stop: data.stop, tickets: data.tickets, error: false }
+    } else {
+      return { stop: false, tickets: [], error: true }
+    }
+  } catch (error) {
+    return { stop: false, tickets: [], error: true }
+  }
+}
+
 export const getSearchID = async () => {
   const result = await fetch('https://aviasales-test-api.kata.academy/search').then((res) => res.json())
   if (!result.ok) localStorage.setItem('searchId', result.searchId)
@@ -15,69 +30,65 @@ export const getSearchID = async () => {
 
 export const getTicketsListDefault = async () => {
   let minID = 100
-  const result = await fetch(
-    `https://aviasales-test-api.kata.academy/tickets?searchId=${localStorage.getItem('searchId')}`
-  )
-    .then((res) => res.json())
-    .then((res) => {
-      const list = res.tickets.map((el) => {
+  const searchId = localStorage.getItem('searchId')
+
+  const fetchTicketsRecursive = async () => {
+    const url = `https://aviasales-test-api.kata.academy/tickets?searchId=${searchId}`
+    let tickets = []
+    const result = await fetchTickets(url)
+
+    if (result.error) {
+      if (result.stop) {
+        sessionStorage.removeItem('searchId')
+        store.dispatch({ type: 'TICKETS_DEFAULT', payload: result })
+      }
+    } else {
+      tickets = result.tickets.map((el) => {
         el.id = minID
         minID += 1
         return el
       })
-      res.tickets = list
-      return res
-    })
-    .then((res) => {
-      getTicketsAll(res.tickets)
-      getTicketsWithout(res.tickets)
-      getTickets1Transfer(res.tickets)
-      getTickets2Transfers(res.tickets)
-      getTickets3Transfers(res.tickets)
-      return res
-    })
-  const payload = result.tickets
-  if (!result.ok) return store.dispatch({ type: 'TICKETS_DEFAULT', payload })
+
+      if (tickets.length > 0) {
+        getTicketsAll(tickets)
+        getTicketsWithout(tickets)
+        getTickets1Transfer(tickets)
+        getTickets2Transfers(tickets)
+        getTickets3Transfers(tickets)
+      }
+    }
+
+    if (result.stop) {
+      store.dispatch({ type: 'TICKETS_DEFAULT', payload: result })
+      return { allTickets: tickets, stop: true }
+    } else {
+      return fetchTicketsRecursive()
+    }
+  }
+
+  return await fetchTicketsRecursive()
 }
 
 export const getTicketsAll = (list) => {
-  const ticketsListDefault = [...list]
-  setTicketsAll(ticketsListDefault)
-  return list
+  setTicketsAll(list)
 }
 
 export const getTicketsWithout = (list) => {
-  const ticketsListDefault = [...list]
-  const result = ticketsListDefault.filter(
-    (el) => el.segments[0].stops.length === 0 || el.segments[1].stops.length === 0
-  )
+  const result = list.filter((el) => el.segments[0].stops.length === 0 || el.segments[1].stops.length === 0)
   setTicketsWithout(result)
-  return list
 }
 
 export const getTickets1Transfer = (list) => {
-  const ticketsListDefault = [...list]
-  const result = ticketsListDefault.filter(
-    (el) => el.segments[0].stops.length === 1 || el.segments[1].stops.length === 1
-  )
+  const result = list.filter((el) => el.segments[0].stops.length === 1 || el.segments[1].stops.length === 1)
   setTicketsTransferOne(result)
-  return list
 }
 
 export const getTickets2Transfers = (list) => {
-  const ticketsListDefault = [...list]
-  const result = ticketsListDefault.filter(
-    (el) => el.segments[0].stops.length === 2 || el.segments[1].stops.length === 2
-  )
+  const result = list.filter((el) => el.segments[0].stops.length === 2 || el.segments[1].stops.length === 2)
   setTicketsTransferTwo(result)
-  return list
 }
 
 export const getTickets3Transfers = (list) => {
-  const ticketsListDefault = [...list]
-  const result = ticketsListDefault.filter(
-    (el) => el.segments[0].stops.length === 3 || el.segments[1].stops.length === 3
-  )
+  const result = list.filter((el) => el.segments[0].stops.length === 3 || el.segments[1].stops.length === 3)
   setTicketsTransferThree(result)
-  return list
 }

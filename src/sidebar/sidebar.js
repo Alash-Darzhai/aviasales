@@ -1,7 +1,5 @@
 import { connect } from 'react-redux'
 
-import './sidebar.scss'
-
 import {
   setFilterAllOn,
   setFilterAllOff,
@@ -15,6 +13,8 @@ import {
   setFilterTransfersThreeOff,
 } from '../redux/actionCreators'
 import { store } from '..'
+
+import classes from './sidebar.module.scss'
 
 const Sidebar = ({ filterAll, filterWithout, filterTransferOne, filterTransfersTwo, filterTransfersThree }) => {
   const changeFilter = (e) => {
@@ -63,10 +63,10 @@ const Sidebar = ({ filterAll, filterWithout, filterTransferOne, filterTransfersT
   }
 
   return (
-    <div className="sidebar">
+    <div className={classes.sidebar}>
       <div>Количество пересадок</div>
-      <div className="filter">
-        <input type="checkbox" className="toggle" checked={filterAll} onChange={() => {}} />
+      <div className={classes.filter}>
+        <input type="checkbox" className={classes.toggle} checked={filterAll} onChange={() => {}} />
         <label
           onClick={(e) => {
             changeFilter(e)
@@ -75,8 +75,8 @@ const Sidebar = ({ filterAll, filterWithout, filterTransferOne, filterTransfersT
           Все
         </label>
       </div>
-      <div className="filter">
-        <input type="checkbox" className="toggle" checked={filterWithout} onChange={() => {}} />
+      <div className={classes.filter}>
+        <input type="checkbox" className={classes.toggle} checked={filterWithout} onChange={() => {}} />
         <label
           onClick={(e) => {
             changeFilter(e)
@@ -86,8 +86,8 @@ const Sidebar = ({ filterAll, filterWithout, filterTransferOne, filterTransfersT
           Без пересадок
         </label>
       </div>
-      <div className="filter">
-        <input type="checkbox" className="toggle" checked={filterTransferOne} onChange={() => {}} />
+      <div className={classes.filter}>
+        <input type="checkbox" className={classes.toggle} checked={filterTransferOne} onChange={() => {}} />
         <label
           onClick={(e) => {
             changeFilter(e)
@@ -97,8 +97,8 @@ const Sidebar = ({ filterAll, filterWithout, filterTransferOne, filterTransfersT
           1 пересадка
         </label>
       </div>
-      <div className="filter">
-        <input type="checkbox" className="toggle" checked={filterTransfersTwo} onChange={() => {}} />
+      <div className={classes.filter}>
+        <input type="checkbox" className={classes.toggle} checked={filterTransfersTwo} onChange={() => {}} />
         <label
           onClick={(e) => {
             changeFilter(e)
@@ -108,8 +108,8 @@ const Sidebar = ({ filterAll, filterWithout, filterTransferOne, filterTransfersT
           2 пересадки
         </label>
       </div>
-      <div className="filter">
-        <input type="checkbox" className="toggle" checked={filterTransfersThree} onChange={() => {}} />
+      <div className={classes.filter}>
+        <input type="checkbox" className={classes.toggle} checked={filterTransfersThree} onChange={() => {}} />
         <label
           onClick={(e) => {
             changeFilter(e)

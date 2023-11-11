@@ -1,4 +1,4 @@
-import './ticket.scss'
+import classes from './ticket.module.scss'
 
 const Ticket = ({ info }) => {
   const minutesToHours = (minutes) => {
@@ -36,35 +36,35 @@ const Ticket = ({ info }) => {
     return `${startTimeFormatted} - ${endTime}`
   }
   return (
-    <div className="ticket-container">
-      <div className="ticket-header">
-        <div className="price">{`${info.price} P`}</div>
-        <img src={`//pics.avs.io/99/36/${info.carrier}.png`} alt="Company's logo" className="logo-company" />
+    <div className={classes['ticket-container']}>
+      <div className={classes['ticket-header']}>
+        <div className={classes.price}>{`${info.price} P`}</div>
+        <img src={`//pics.avs.io/99/36/${info.carrier}.png`} alt="Company's logo" className={classes['logo-company']} />
       </div>
-      <div className="info">
+      <div className={classes.info}>
         <div>
-          <p className="info--place">{`${info.segments[0].origin} - ${info.segments[0].destination}`}</p>
-          <p className="info--time">{calculateTime(info.segments[0].date, info.segments[0].duration)}</p>
+          <p className={classes['info--place']}>{`${info.segments[0].origin} - ${info.segments[0].destination}`}</p>
+          <p className={classes['info--time']}>{calculateTime(info.segments[0].date, info.segments[0].duration)}</p>
         </div>
         <div>
-          <p className="inWay">В пути</p>
-          <p className="time-count">{minutesToHours(info.segments[0].duration)}</p>
+          <p className={classes['inWay']}>В пути</p>
+          <p className={classes['time-count']}>{minutesToHours(info.segments[0].duration)}</p>
         </div>
         <div>
-          <p className="transfer-count">{stopsCount(info.segments[0].stops.length)}</p>
-          <p className="transfer-name">{info.segments[0].stops.join(', ')}</p>
+          <p className={classes['transfer-count']}>{stopsCount(info.segments[0].stops.length)}</p>
+          <p className={classes['transfer-name']}>{info.segments[0].stops.join(', ')}</p>
         </div>
         <div>
-          <p className="info--place">{`${info.segments[1].origin} - ${info.segments[1].destination}`}</p>
-          <p className="info--time">{calculateTime(info.segments[1].date, info.segments[1].duration)}</p>
+          <p className={classes['info--place']}>{`${info.segments[1].origin} - ${info.segments[1].destination}`}</p>
+          <p className={classes['info--time']}>{calculateTime(info.segments[1].date, info.segments[1].duration)}</p>
         </div>
         <div>
-          <p className="inWay">В пути</p>
-          <p className="time-count">{minutesToHours(info.segments[1].duration)}</p>
+          <p className={classes['inWay']}>В пути</p>
+          <p className={classes['time-count']}>{minutesToHours(info.segments[1].duration)}</p>
         </div>
         <div>
-          <p className="transfer-count">{stopsCount(info.segments[1].stops.length)}</p>
-          <p className="transfer-name">{info.segments[1].stops.join(', ')}</p>
+          <p className={classes['transfer-count']}>{stopsCount(info.segments[1].stops.length)}</p>
+          <p className={classes['transfer-name']}>{info.segments[1].stops.join(', ')}</p>
         </div>
       </div>
     </div>
