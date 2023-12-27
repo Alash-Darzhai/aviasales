@@ -24,13 +24,25 @@ const fetchTickets = async (url) => {
 }
 
 export const getSearchID = async () => {
-  const result = await fetch('https://aviasales-test-api.kata.academy/search').then((res) => res.json())
-  if (!result.ok) localStorage.setItem('searchId', result.searchId)
+  try {
+    const result = await fetch('https://aviasales-test-api.kata.academy/search').then((res) => res.json())
+    if (result && result.searchId) {
+      localStorage.setItem('searchId', result.searchId)
+    } else {
+      console.error('Failed to retrieve search ID')
+    }
+  } catch (error) {
+    console.error('Error occurred while fetching search ID:', error)
+  }
 }
 
 export const getTicketsListDefault = async () => {
   let minID = 100
   const searchId = localStorage.getItem('searchId')
+  if (!searchId) {
+    console.error('Search ID is missing in local storage')
+    return // or handle the error as needed
+  }
 
   const fetchTicketsRecursive = async () => {
     const url = `https://aviasales-test-api.kata.academy/tickets?searchId=${searchId}`
